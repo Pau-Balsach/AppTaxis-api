@@ -1,0 +1,20 @@
+# --- Archivo de claves locales (BLOQUEADO) ---
+src/main/resources/application-local.properties
+
+# --- Carpeta de compilación ---
+target/
+*.jar
+
+# --- Archivos de NetBeans y editores ---
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+.idea/
+.vscode/
+
+# --- Sistema ---
+.DS_Store
+Thumbs.db
