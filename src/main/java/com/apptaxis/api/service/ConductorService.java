@@ -20,11 +20,11 @@ public class ConductorService {
     }
 
     public List<Conductor> listarTodos(UUID adminId) {
-        return repo.findByCond_admin(adminId);
+        return repo.findByAdminId(adminId);
     }
 
     public Optional<Conductor> buscarPorId(int id, UUID adminId) {
-        return repo.findByIdAndCond_admin(id, adminId);
+        return repo.findByIdAndAdminId(id, adminId);
     }
 
     public boolean registrar(Conductor conductor, UUID adminId) {
@@ -32,17 +32,16 @@ public class ConductorService {
             return false;
         if (conductor.getNombre() == null || conductor.getNombre().isBlank())
             return false;
-        if (repo.existsByMatriculaAndCond_admin(conductor.getMatricula(), adminId))
+        if (repo.existsByMatriculaAndAdminId(conductor.getMatricula(), adminId))
             return false;
-
-        conductor.setCond_admin(adminId);   // aseguramos que el conductor queda ligado al admin
+        conductor.setCond_admin(adminId);
         repo.save(conductor);
         return true;
     }
 
     public boolean editar(int id, String nuevoNombre, UUID adminId) {
         if (nuevoNombre == null || nuevoNombre.isBlank()) return false;
-        return repo.findByIdAndCond_admin(id, adminId).map(c -> {
+        return repo.findByIdAndAdminId(id, adminId).map(c -> {
             c.setNombre(nuevoNombre.trim());
             repo.save(c);
             return true;
@@ -50,7 +49,7 @@ public class ConductorService {
     }
 
     public boolean eliminar(int id, UUID adminId) {
-        return repo.findByIdAndCond_admin(id, adminId).map(c -> {
+        return repo.findByIdAndAdminId(id, adminId).map(c -> {
             repo.delete(c);
             return true;
         }).orElse(false);

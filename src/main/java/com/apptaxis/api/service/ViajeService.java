@@ -22,20 +22,19 @@ public class ViajeService {
     }
 
     public List<Viaje> listarTodos(UUID adminId) {
-        return viajeRepo.findByConductorCond_admin(adminId);
+        return viajeRepo.findAllByAdminId(adminId);
     }
 
     public List<Viaje> listarPorConductor(int conductorId, UUID adminId) {
-        return viajeRepo.findByConductorIdAndConductorCond_adminOrderByDiaAscHoraAsc(conductorId, adminId);
+        return viajeRepo.findByConductorAndAdminId(conductorId, adminId);
     }
 
     public Optional<Viaje> buscarPorId(UUID id, UUID adminId) {
-        return viajeRepo.findByIdAndConductorCond_admin(id, adminId);
+        return viajeRepo.findByIdAndAdminId(id, adminId);
     }
 
     public boolean crear(Viaje viaje, int conductorId, UUID adminId) {
-        // El conductor debe pertenecer al mismo admin
-        Optional<Conductor> conductor = conductorRepo.findByIdAndCond_admin(conductorId, adminId);
+        Optional<Conductor> conductor = conductorRepo.findByIdAndAdminId(conductorId, adminId);
         if (conductor.isEmpty()) return false;
         viaje.setConductor(conductor.get());
         viajeRepo.save(viaje);
@@ -43,7 +42,7 @@ public class ViajeService {
     }
 
     public boolean editar(UUID id, Viaje datos, UUID adminId) {
-        return viajeRepo.findByIdAndConductorCond_admin(id, adminId).map(v -> {
+        return viajeRepo.findByIdAndAdminId(id, adminId).map(v -> {
             v.setDia(datos.getDia());
             v.setHora(datos.getHora());
             v.setPuntorecogida(datos.getPuntorecogida());
@@ -55,7 +54,7 @@ public class ViajeService {
     }
 
     public boolean eliminar(UUID id, UUID adminId) {
-        return viajeRepo.findByIdAndConductorCond_admin(id, adminId).map(v -> {
+        return viajeRepo.findByIdAndAdminId(id, adminId).map(v -> {
             viajeRepo.delete(v);
             return true;
         }).orElse(false);
