@@ -32,9 +32,10 @@ public class ApiKeyFilter extends OncePerRequestFilter {
                                     FilterChain chain)
             throws ServletException, IOException {
 
-        // Swagger UI y OpenAPI spec son públicos
         String path = request.getRequestURI();
-        if (path.contains("/swagger-ui") || path.contains("/v3/api-docs")) {
+
+        // Rutas públicas — no requieren API key
+        if (isPublicPath(path)) {
             chain.doFilter(request, response);
             return;
         }
@@ -53,10 +54,16 @@ public class ApiKeyFilter extends OncePerRequestFilter {
             return;
         }
 
-        // Inyectamos el adminId en el request para que los controllers lo lean
         request.setAttribute(ADMIN_ID_ATTR, apiKey.get().getAdminId());
-
         chain.doFilter(request, response);
+    }
+
+    private boolean isPublicPath(String path) {
+        return path.startsWith("/swagger-ui")
+            || path.startsWith("/api-docs")
+            || path.startsWith("/v3/api-docs")
+            || path.equals("/swagger-ui.html")
+            || path.equals("/favicon.ico");
     }
 
     private void reject(HttpServletResponse response, String mensaje) throws IOException {
