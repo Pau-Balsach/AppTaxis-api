@@ -13,7 +13,7 @@ import java.util.UUID;
 @Service
 public class ViajeService {
 
-    private final ViajeRepository viajeRepo;
+    private final ViajeRepository     viajeRepo;
     private final ConductorRepository conductorRepo;
 
     public ViajeService(ViajeRepository viajeRepo, ConductorRepository conductorRepo) {
@@ -21,28 +21,29 @@ public class ViajeService {
         this.conductorRepo = conductorRepo;
     }
 
-    public List<Viaje> listarTodos() {
-        return viajeRepo.findAll();
+    public List<Viaje> listarTodos(UUID adminId) {
+        return viajeRepo.findByConductorCond_admin(adminId);
     }
 
-    public List<Viaje> listarPorConductor(int conductorId) {
-        return viajeRepo.findByConductorIdOrderByDiaAscHoraAsc(conductorId);
+    public List<Viaje> listarPorConductor(int conductorId, UUID adminId) {
+        return viajeRepo.findByConductorIdAndConductorCond_adminOrderByDiaAscHoraAsc(conductorId, adminId);
     }
 
-    public Optional<Viaje> buscarPorId(UUID id) {
-        return viajeRepo.findById(id);
+    public Optional<Viaje> buscarPorId(UUID id, UUID adminId) {
+        return viajeRepo.findByIdAndConductorCond_admin(id, adminId);
     }
 
-    public boolean crear(Viaje viaje, int conductorId) {
-        Optional<Conductor> conductor = conductorRepo.findById(conductorId);
+    public boolean crear(Viaje viaje, int conductorId, UUID adminId) {
+        // El conductor debe pertenecer al mismo admin
+        Optional<Conductor> conductor = conductorRepo.findByIdAndCond_admin(conductorId, adminId);
         if (conductor.isEmpty()) return false;
         viaje.setConductor(conductor.get());
         viajeRepo.save(viaje);
         return true;
     }
 
-    public boolean editar(UUID id, Viaje datos) {
-        return viajeRepo.findById(id).map(v -> {
+    public boolean editar(UUID id, Viaje datos, UUID adminId) {
+        return viajeRepo.findByIdAndConductorCond_admin(id, adminId).map(v -> {
             v.setDia(datos.getDia());
             v.setHora(datos.getHora());
             v.setPuntorecogida(datos.getPuntorecogida());
@@ -53,9 +54,10 @@ public class ViajeService {
         }).orElse(false);
     }
 
-    public boolean eliminar(UUID id) {
-        if (!viajeRepo.existsById(id)) return false;
-        viajeRepo.deleteById(id);
-        return true;
+    public boolean eliminar(UUID id, UUID adminId) {
+        return viajeRepo.findByIdAndConductorCond_admin(id, adminId).map(v -> {
+            viajeRepo.delete(v);
+            return true;
+        }).orElse(false);
     }
 }

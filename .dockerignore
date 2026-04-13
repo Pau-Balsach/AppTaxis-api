@@ -1,0 +1,10 @@
+target/
+.git/
+.gitignore
+*.log
+.mvn/wrapper/maven-wrapper.jar
+# Archivos de IDEs
+.nb-gradle/
+nbproject/
+.idea/
+.vscode/
