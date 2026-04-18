@@ -45,6 +45,7 @@ public class ViajeService {
         return viajeRepo.findByIdAndAdminId(id, adminId).map(v -> {
             v.setDia(datos.getDia());
             v.setHora(datos.getHora());
+            v.setHoraFinalizacion(datos.getHoraFinalizacion());
             v.setPuntorecogida(datos.getPuntorecogida());
             v.setPuntodejada(datos.getPuntodejada());
             v.setTelefonocliente(datos.getTelefonocliente());
