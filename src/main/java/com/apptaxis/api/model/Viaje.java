@@ -1,5 +1,6 @@
 package com.apptaxis.api.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -15,8 +16,10 @@ public class Viaje {
 
     private LocalDate dia;
     private LocalTime hora;
+
     @Column(name = "hora_finalizacion")
     private LocalTime horaFinalizacion;
+
     private String puntodejada;
     private String puntorecogida;
     private String telefonocliente;
@@ -24,6 +27,11 @@ public class Viaje {
     @ManyToOne
     @JoinColumn(name = "conductor_id")
     private Conductor conductor;
+
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
+    @JsonIgnoreProperties("listaViajes")   
+    private Cliente cliente;
 
     public Viaje() {
         this.id = UUID.randomUUID();
@@ -52,4 +60,7 @@ public class Viaje {
 
     public Conductor getConductor() { return conductor; }
     public void setConductor(Conductor conductor) { this.conductor = conductor; }
+
+    public Cliente getCliente() { return cliente; }
+    public void setCliente(Cliente cliente) { this.cliente = cliente; }
 }

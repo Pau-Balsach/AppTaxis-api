@@ -21,4 +21,7 @@ public interface ViajeRepository extends JpaRepository<Viaje, UUID> {
 
     @Query("SELECT v FROM Viaje v WHERE v.id = :id AND v.conductor.cond_admin = :adminId")
     Optional<Viaje> findByIdAndAdminId(@Param("id") UUID id, @Param("adminId") UUID adminId);
+
+    @Query("SELECT v FROM Viaje v WHERE v.cliente.id = :clienteId AND v.conductor.cond_admin = :adminId ORDER BY v.dia DESC, v.hora DESC")
+    List<Viaje> findByClienteAndAdminId(@Param("clienteId") int clienteId, @Param("adminId") UUID adminId);
 }
