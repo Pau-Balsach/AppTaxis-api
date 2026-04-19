@@ -2,7 +2,11 @@
 
 API REST para la gestión de conductores, viajes y clientes de una flota de taxis.
 
+**Versión:** 1.1.0 — OAS 3.0
+
 **Swagger UI:** https://apptaxis-api-production.up.railway.app/swagger-ui/index.html#/
+
+**Base URL:** `http://apptaxis-api-production.up.railway.app`
 
 ---
 
@@ -24,7 +28,7 @@ Cada clave solo permite acceder a los datos de su propio cliente — no puedes v
 
 | Método | Ruta | Descripción |
 |---|---|---|
-| GET | `/conductores` | Lista todos los conductores de tu cuenta |
+| GET | `/conductores` | Lista todos los conductores del cliente autenticado |
 | GET | `/conductores/{id}` | Busca un conductor por ID |
 | POST | `/conductores` | Registra un nuevo conductor |
 | PUT | `/conductores/{id}` | Edita el nombre de un conductor |
@@ -37,11 +41,21 @@ Cada clave solo permite acceder a los datos de su propio cliente — no puedes v
   "matricula": "1234ABC"
 }
 ```
-La matrícula debe seguir el formato `1234ABC` (4 números + 3 letras mayúsculas).
+La matrícula debe seguir el formato `1234ABC` (4 números + 3 letras mayúsculas). El conductor queda vinculado al cliente autenticado.
 
 **PUT `/conductores/{id}`** — parámetro query:
 ```
 PUT /conductores/1?nuevoNombre=Pedro López
+```
+
+**Esquema Conductor:**
+```json
+{
+  "id": 0,
+  "nombre": "string",
+  "matricula": "string",
+  "cond_admin": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+}
 ```
 
 ---
@@ -50,7 +64,7 @@ PUT /conductores/1?nuevoNombre=Pedro López
 
 | Método | Ruta | Descripción |
 |---|---|---|
-| GET | `/viajes` | Lista todos los viajes de tu cuenta |
+| GET | `/viajes` | Lista todos los viajes del cliente autenticado |
 | GET | `/viajes/{id}` | Busca un viaje por UUID |
 | GET | `/viajes/conductor/{conductorId}` | Lista los viajes de un conductor ordenados por fecha y hora |
 | POST | `/viajes/conductor/{conductorId}` | Crea un viaje asignado a un conductor |
@@ -61,14 +75,60 @@ PUT /conductores/1?nuevoNombre=Pedro López
 ```json
 {
   "dia": "2025-04-15",
-  "hora": "09:30",
+  "diaFin": "2025-04-15",
+  "hora": "09:30:00",
+  "horaFinalizacion": "10:15:00",
   "puntorecogida": "Calle Mayor 1, Barcelona",
   "puntodejada": "Aeropuerto T1, Barcelona",
   "telefonocliente": "600123456",
   "cliente": { "id": 3 }
 }
 ```
-El campo `cliente.id` es opcional. Si se incluye, el viaje queda vinculado a ese cliente y `telefonocliente` se autocompleta con el teléfono del cliente si no se envía.
+
+El campo `diaFin` permite registrar viajes que cruzan la medianoche — si el viaje termina al día siguiente, `diaFin` será distinto de `dia`. El campo `cliente.id` es opcional.
+
+**PUT `/viajes/{id}`** — mismo body que POST, incluyendo `conductor` y `cliente`:
+```json
+{
+  "dia": "2025-04-15",
+  "diaFin": "2025-04-15",
+  "hora": "09:30:00",
+  "horaFinalizacion": "10:15:00",
+  "puntorecogida": "Calle Mayor 1, Barcelona",
+  "puntodejada": "Aeropuerto T1, Barcelona",
+  "telefonocliente": "600123456",
+  "conductor": { "id": 1 },
+  "cliente": { "id": 3 }
+}
+```
+
+**Esquema Viaje:**
+```json
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "dia": "2026-04-19",
+  "diaFin": "2026-04-19",
+  "hora": "09:30:00",
+  "horaFinalizacion": "10:15:00",
+  "puntorecogida": "string",
+  "puntodejada": "string",
+  "telefonocliente": "string",
+  "conductor": {
+    "id": 0,
+    "nombre": "string",
+    "matricula": "string",
+    "cond_admin": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+  },
+  "cliente": {
+    "id": 0,
+    "nombre": "string",
+    "telefono": "string",
+    "email": "string",
+    "notas": "string",
+    "adminId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+  }
+}
+```
 
 ---
 
@@ -96,50 +156,15 @@ Los campos `email` y `notas` son opcionales.
 
 **GET `/clientes?q=maria`** — busca clientes cuyo nombre o teléfono contengan el texto.
 
----
-
-## Estructura de datos
-
-### Conductor
+**Esquema Cliente:**
 ```json
 {
-  "id": 1,
-  "nombre": "Juan García",
-  "matricula": "1234ABC"
-}
-```
-
-### Cliente
-```json
-{
-  "id": 1,
-  "nombre": "María López",
-  "telefono": "600987654",
-  "email": "maria@email.com",
-  "notas": "Cliente habitual aeropuerto"
-}
-```
-
-### Viaje
-```json
-{
-  "id": "550e8400-e29b-41d4-a716-446655440000",
-  "dia": "2025-04-15",
-  "hora": "09:30:00",
-  "horaFinalizacion": "10:15:00",
-  "puntorecogida": "Calle Mayor 1, Barcelona",
-  "puntodejada": "Aeropuerto T1, Barcelona",
-  "telefonocliente": "600987654",
-  "conductor": {
-    "id": 1,
-    "nombre": "Juan García",
-    "matricula": "1234ABC"
-  },
-  "cliente": {
-    "id": 1,
-    "nombre": "María López",
-    "telefono": "600987654"
-  }
+  "id": 0,
+  "nombre": "string",
+  "telefono": "string",
+  "email": "string",
+  "notas": "string",
+  "adminId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
 }
 ```
 
@@ -183,15 +208,16 @@ clientes (
 
 -- Viajes
 viajes (
-  id               UUID PRIMARY KEY,
-  dia              DATE,
-  hora             TIME,
+  id                UUID PRIMARY KEY,
+  dia               DATE,
+  dia_fin           DATE,          -- nullable, distinto de dia si cruza medianoche
+  hora              TIME,
   hora_finalizacion TIME,
-  puntorecogida    VARCHAR,
-  puntodejada      VARCHAR,
-  telefonocliente  VARCHAR,
-  conductor_id     INTEGER REFERENCES conductores(id),
-  cliente_id       INTEGER REFERENCES clientes(id)  -- nullable
+  puntorecogida     VARCHAR,
+  puntodejada       VARCHAR,
+  telefonocliente   VARCHAR,
+  conductor_id      INTEGER REFERENCES conductores(id),
+  cliente_id        INTEGER REFERENCES clientes(id)  -- nullable
 )
 ```
 
