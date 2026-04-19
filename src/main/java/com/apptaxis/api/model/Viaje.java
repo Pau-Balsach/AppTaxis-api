@@ -15,6 +15,10 @@ public class Viaje {
     private UUID id;
 
     private LocalDate dia;
+
+    @Column(name = "dia_fin")
+    private LocalDate diaFin;
+
     private LocalTime hora;
 
     @Column(name = "hora_finalizacion")
@@ -30,7 +34,7 @@ public class Viaje {
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
-    @JsonIgnoreProperties("listaViajes")   
+    @JsonIgnoreProperties("listaViajes")
     private Cliente cliente;
 
     public Viaje() {
@@ -42,6 +46,9 @@ public class Viaje {
 
     public LocalDate getDia() { return dia; }
     public void setDia(LocalDate dia) { this.dia = dia; }
+
+    public LocalDate getDiaFin() { return diaFin; }
+    public void setDiaFin(LocalDate diaFin) { this.diaFin = diaFin; }
 
     public LocalTime getHora() { return hora; }
     public void setHora(LocalTime hora) { this.hora = hora; }

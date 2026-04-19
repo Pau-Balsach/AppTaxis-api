@@ -43,12 +43,14 @@ public class ViajeService {
         if (conductor.isEmpty()) return false;
         viaje.setConductor(conductor.get());
 
-        // Vincular cliente si viene en el body con id no nulo
+        if (viaje.getDiaFin() == null) {
+            viaje.setDiaFin(viaje.getDia());
+        }
+
         if (viaje.getCliente() != null && viaje.getCliente().getId() != null) {
             clienteRepo.findByIdAndAdminId(viaje.getCliente().getId(), adminId)
                 .ifPresent(c -> {
                     viaje.setCliente(c);
-                    // Autocompletar teléfono si no viene en el body
                     if (viaje.getTelefonocliente() == null || viaje.getTelefonocliente().isBlank()) {
                         viaje.setTelefonocliente(c.getTelefono());
                     }
@@ -68,11 +70,12 @@ public class ViajeService {
             v.setPuntodejada(datos.getPuntodejada());
             v.setTelefonocliente(datos.getTelefonocliente());
 
+            v.setDiaFin(datos.getDiaFin() != null ? datos.getDiaFin() : datos.getDia());
+
             if (datos.getCliente() != null && datos.getCliente().getId() != null) {
                 clienteRepo.findByIdAndAdminId(datos.getCliente().getId(), adminId)
                     .ifPresent(v::setCliente);
             } else if (datos.getCliente() == null) {
-                // Desvincular cliente si viene explícitamente como null
                 v.setCliente(null);
             }
 
