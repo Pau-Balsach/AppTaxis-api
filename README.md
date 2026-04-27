@@ -293,36 +293,37 @@ La API estará disponible en `http://localhost:8080` y el Swagger en `http://loc
 ## Estructura del proyecto
 
 ```
-src/main/java/com/apptaxis/api/
-├── AppTaxisApiApplication.java       ← Punto de entrada Spring Boot
-├── SwaggerConfig.java                ← Configuración OpenAPI / Swagger
-├── controller/
-│   ├── ConductorController.java      ← Endpoints /conductores
-│   ├── ViajeController.java          ← Endpoints /viajes
-│   └── ClienteController.java        ← Endpoints /clientes
-├── service/
-│   ├── ConductorService.java         ← Lógica de negocio conductores
-│   ├── ViajeService.java             ← Lógica de negocio viajes
-│   └── ClienteService.java           ← Lógica de negocio clientes
-├── repository/
-│   ├── ApiKeyRepository.java         ← Acceso a api_keys
-│   ├── ConductorRepository.java      ← Acceso a conductores
-│   ├── ViajeRepository.java          ← Acceso a viajes
-│   └── ClienteRepository.java        ← Acceso a clientes
-├── model/
-│   ├── ApiKey.java                   ← Entidad api_keys
-│   ├── Conductor.java                ← Entidad conductores
-│   ├── Viaje.java                    ← Entidad viajes
-│   └── Cliente.java                  ← Entidad clientes
-├── security/
-│   ├── ApiKeyFilter.java             ← Filtro HTTP que valida X-API-Key
-│   └── SecurityUtils.java            ← Hash SHA-256
-├── dto/
-│   └── ApiResponse.java              ← Wrapper genérico de respuestas
-└── exception/
-    ├── GlobalExceptionHandler.java   ← Manejo centralizado de errores
-    ├── ResourceNotFoundException.java
-    └── BadRequestException.java
+src/main/java/
+├── com/apptaxis/api/
+│   ├── AppTaxisApiApplication.java       ← Punto de entrada Spring Boot
+│   ├── SwaggerConfig.java                ← Configuración OpenAPI / Swagger
+│   ├── controller/
+│   │   ├── ClienteController.java        ← Endpoints /clientes
+│   │   ├── ConductorController.java      ← Endpoints /conductores
+│   │   └── ViajeController.java          ← Endpoints /viajes
+│   ├── dto/
+│   │   └── ApiResponse.java              ← Wrapper genérico de respuestas
+│   ├── exception/
+│   │   ├── BadRequestException.java      ← Excepción de petición incorrecta
+│   │   ├── GlobalExceptionHandler.java   ← Manejo centralizado de errores
+│   │   └── ResourceNotFoundException.java← Excepción de recurso no encontrado
+│   ├── model/
+│   │   ├── ApiKey.java                   ← Entidad api_keys
+│   │   ├── Cliente.java                  ← Entidad clientes
+│   │   ├── Conductor.java                ← Entidad conductores
+│   │   └── Viaje.java                    ← Entidad viajes
+│   ├── repository/
+│   │   ├── ApiKeyRepository.java         ← Acceso a api_keys
+│   │   ├── ClienteRepository.java        ← Acceso a clientes
+│   │   ├── ConductorRepository.java      ← Acceso a conductores
+│   │   └── ViajeRepository.java          ← Acceso a viajes
+│   └── service/
+│       ├── ClienteService.java           ← Lógica de negocio clientes
+│       ├── ConductorService.java         ← Lógica de negocio conductores
+│       └── ViajeService.java             ← Lógica de negocio viajes
+└── security/
+    ├── ApiKeyFilter.java                 ← Filtro HTTP que valida X-API-Key
+    └── SecurityUtils.java                ← Hash SHA-256
 ```
 
 ---
