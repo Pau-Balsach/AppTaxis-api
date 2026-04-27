@@ -72,6 +72,11 @@ public class ViajeService {
 
             v.setDiaFin(datos.getDiaFin() != null ? datos.getDiaFin() : datos.getDia());
 
+            if (datos.getConductor() != null && datos.getConductor().getId() != 0) {
+                conductorRepo.findByIdAndAdminId(datos.getConductor().getId(), adminId)
+                    .ifPresent(v::setConductor);
+            }
+
             if (datos.getCliente() != null && datos.getCliente().getId() != null) {
                 clienteRepo.findByIdAndAdminId(datos.getCliente().getId(), adminId)
                     .ifPresent(v::setCliente);
