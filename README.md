@@ -328,11 +328,11 @@ src/main/java/
 
 ---
 
-## Despliegue en Railway
+## Despliegue en Render
 
-El proyecto está desplegado en Railway conectado a Supabase como base de datos PostgreSQL.
+El proyecto está desplegado en Render conectado a Supabase como base de datos PostgreSQL.
 
-Variables de entorno configuradas en Railway:
+Variables de entorno configuradas en Render:
 
 | Variable | Descripción |
 |---|---|
