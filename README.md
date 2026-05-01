@@ -290,6 +290,37 @@ La API estará disponible en `http://localhost:8080` y el Swagger en `http://loc
 
 ---
 
+## 🛠️ Tecnologías
+
+- **Java 21** — Lenguaje principal
+- **Spring Boot 3** — Framework REST
+- **Spring Data JPA + Hibernate** — ORM y acceso a datos
+- **PostgreSQL / Supabase** — Base de datos relacional en la nube
+- **SpringDoc OpenAPI 3 (Swagger UI)** — Documentación interactiva de la API
+- **SHA-256** — Hash de API keys para autenticación sin almacenar claves en claro
+- **Docker + Docker Compose** — Contenerización y despliegue
+- **Render** — Hosting del servicio en producción
+- **JUnit 5 + Mockito** — Tests unitarios de la capa de servicio
+- **Maven** — Gestión de dependencias y build
+
+---
+
+## 🧪 Tests
+
+Tests unitarios de la capa de servicio, sin conexión a base de datos real — los repositorios se inyectan como mocks con Mockito.
+
+| Clase de test | Qué se verifica |
+| :--- | :--- |
+| **ClienteServiceTest** | `listarTodos` y `buscarPorId` delegan en el repo; `buscar` usa query solo si hay texto; `registrar` falla con nombre/teléfono vacíos y asigna `adminId` antes de guardar; `editar` actualiza todos los campos con trim; `eliminar` e `historialViajes` funcionan correctamente |
+| **ConductorServiceTest** | `registrar` falla con matrícula inválida (`^[0-9]{4}[A-Z]{3}$`), nombre vacío o matrícula duplicada, y asigna `adminId` al guardar; `editar` aplica trim y falla si nombre vacío o conductor inexistente; `eliminar` devuelve false si no existe |
+| **ViajeServiceTest** | `crear` falla si el conductor no existe, asigna `diaFin` por defecto y rellena `telefonocliente` desde el cliente si está vacío; `editar` actualiza todos los campos incluyendo conductor, cliente y desasociación con null; `eliminar` delega correctamente en el repo |
+
+```bash
+mvn test
+```
+
+---
+
 ## Estructura del proyecto
 
 ```
