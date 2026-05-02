@@ -1,4 +1,4 @@
-package security;
+package com.apptaxis.api.security;
 
 import com.apptaxis.api.model.ApiKey;
 import com.apptaxis.api.repository.ApiKeyRepository;

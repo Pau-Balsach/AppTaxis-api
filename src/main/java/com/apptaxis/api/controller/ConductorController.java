@@ -1,7 +1,7 @@
 package com.apptaxis.api.controller;
 
 import com.apptaxis.api.model.Conductor;
-import security.ApiKeyFilter;
+import com.apptaxis.api.security.ApiKeyFilter;
 import com.apptaxis.api.service.ConductorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -26,7 +26,6 @@ public class ConductorController {
         this.service = service;
     }
 
-    /** Extrae el adminId inyectado por ApiKeyFilter. */
     private UUID adminId(HttpServletRequest req) {
         return (UUID) req.getAttribute(ApiKeyFilter.ADMIN_ID_ATTR);
     }
