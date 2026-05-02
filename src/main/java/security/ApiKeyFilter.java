@@ -1,7 +1,8 @@
-package com.apptaxis.api.security;
+package security;
 
 import com.apptaxis.api.model.ApiKey;
 import com.apptaxis.api.repository.ApiKeyRepository;
+import com.apptaxis.api.security.SecurityUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

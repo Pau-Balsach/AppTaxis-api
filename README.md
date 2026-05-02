@@ -24,6 +24,24 @@ Cada clave solo permite acceder a los datos de su propio cliente — no puedes v
 
 ## Endpoints
 
+### Health
+
+| Método | Ruta | Descripción |
+|---|---|---|
+| GET | `/health` | Comprueba si la API está activa. No requiere autenticación |
+
+**GET `/health`** — respuesta:
+```json
+{
+  "success": true,
+  "message": "ok",
+  "data": "2026-05-03T12:34:56",
+  "timestamp": "2026-05-03T12:34:56"
+}
+```
+
+---
+
 ### Conductores
 
 | Método | Ruta | Descripción |
@@ -331,6 +349,7 @@ src/main/java/
 │   ├── controller/
 │   │   ├── ClienteController.java        ← Endpoints /clientes
 │   │   ├── ConductorController.java      ← Endpoints /conductores
+│   │   ├── HealthController.java         ← Endpoint público /health
 │   │   └── ViajeController.java          ← Endpoints /viajes
 │   ├── dto/
 │   │   └── ApiResponse.java              ← Wrapper genérico de respuestas

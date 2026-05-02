@@ -1,7 +1,7 @@
 package com.apptaxis.api.controller;
 
 import com.apptaxis.api.model.Conductor;
-import com.apptaxis.api.security.ApiKeyFilter;
+import security.ApiKeyFilter;
 import com.apptaxis.api.service.ConductorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

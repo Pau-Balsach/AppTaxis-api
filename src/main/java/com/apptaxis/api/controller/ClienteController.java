@@ -2,7 +2,7 @@ package com.apptaxis.api.controller;
 
 import com.apptaxis.api.model.Cliente;
 import com.apptaxis.api.model.Viaje;
-import com.apptaxis.api.security.ApiKeyFilter;
+import security.ApiKeyFilter;
 import com.apptaxis.api.service.ClienteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
