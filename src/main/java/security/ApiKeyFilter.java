@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import java.io.IOException;
 import java.util.Optional;
 
@@ -27,14 +26,13 @@ public class ApiKeyFilter extends OncePerRequestFilter {
     }
 
     @Override
-    
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
         String path = request.getRequestURI();
-        if ("/health".equals(path)) {
+        if ("/health".equals(path) || isPublicPath(path)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -47,7 +45,6 @@ public class ApiKeyFilter extends OncePerRequestFilter {
 
         String hash = SecurityUtils.generarHash(rawKey.trim());
         Optional<ApiKey> apiKey = apiKeyRepository.findByKeyHashAndActivaTrue(hash);
-
         if (apiKey.isEmpty()) {
             reject(response, "API Key inválida o inactiva.");
             return;
