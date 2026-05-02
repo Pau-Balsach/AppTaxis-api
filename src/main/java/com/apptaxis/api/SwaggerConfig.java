@@ -25,6 +25,9 @@ public class SwaggerConfig {
                     **Autenticación**: todos los endpoints requieren el header `X-API-Key` \
                     con una clave válida asignada a tu cuenta. Cada clave solo permite \
                     acceder a los datos de su propio cliente.
+                    
+                    **Endpoint público**: `GET /health` no requiere autenticación \
+                    y permite comprobar el estado de la API.
                     """)
                 .version("1.1.0")
                 .contact(new Contact()

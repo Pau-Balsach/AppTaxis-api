@@ -27,16 +27,15 @@ public class ApiKeyFilter extends OncePerRequestFilter {
     }
 
     @Override
+    
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
-                                    FilterChain chain)
+                                    FilterChain filterChain)
             throws ServletException, IOException {
 
         String path = request.getRequestURI();
-
-        // Rutas públicas — no requieren API key
-        if (isPublicPath(path)) {
-            chain.doFilter(request, response);
+        if ("/health".equals(path)) {
+            filterChain.doFilter(request, response);
             return;
         }
 
@@ -55,7 +54,7 @@ public class ApiKeyFilter extends OncePerRequestFilter {
         }
 
         request.setAttribute(ADMIN_ID_ATTR, apiKey.get().getAdminId());
-        chain.doFilter(request, response);
+        filterChain.doFilter(request, response);
     }
 
     private boolean isPublicPath(String path) {
