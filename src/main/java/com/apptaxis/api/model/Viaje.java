@@ -28,6 +28,18 @@ public class Viaje {
     private String puntorecogida;
     private String telefonocliente;
 
+    @Column(name = "lat_recogida")
+    private Double latRecogida;
+
+    @Column(name = "lng_recogida")
+    private Double lngRecogida;
+
+    @Column(name = "lat_dejada")
+    private Double latDejada;
+
+    @Column(name = "lng_dejada")
+    private Double lngDejada;
+
     @ManyToOne
     @JoinColumn(name = "conductor_id")
     private Conductor conductor;
@@ -64,6 +76,18 @@ public class Viaje {
 
     public String getTelefonocliente() { return telefonocliente; }
     public void setTelefonocliente(String telefonocliente) { this.telefonocliente = telefonocliente; }
+
+    public Double getLatRecogida() { return latRecogida; }
+    public void setLatRecogida(Double latRecogida) { this.latRecogida = latRecogida; }
+
+    public Double getLngRecogida() { return lngRecogida; }
+    public void setLngRecogida(Double lngRecogida) { this.lngRecogida = lngRecogida; }
+
+    public Double getLatDejada() { return latDejada; }
+    public void setLatDejada(Double latDejada) { this.latDejada = latDejada; }
+
+    public Double getLngDejada() { return lngDejada; }
+    public void setLngDejada(Double lngDejada) { this.lngDejada = lngDejada; }
 
     public Conductor getConductor() { return conductor; }
     public void setConductor(Conductor conductor) { this.conductor = conductor; }

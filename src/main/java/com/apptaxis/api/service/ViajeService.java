@@ -56,7 +56,7 @@ public class ViajeService {
                     }
                 });
         }
-
+        
         viajeRepo.save(viaje);
         return true;
     }
@@ -71,6 +71,12 @@ public class ViajeService {
             v.setTelefonocliente(datos.getTelefonocliente());
 
             v.setDiaFin(datos.getDiaFin() != null ? datos.getDiaFin() : datos.getDia());
+
+            if (datos.getLatRecogida() != null) v.setLatRecogida(datos.getLatRecogida());
+            if (datos.getLngRecogida() != null) v.setLngRecogida(datos.getLngRecogida());
+            if (datos.getLatDejada()   != null) v.setLatDejada(datos.getLatDejada());
+            if (datos.getLngDejada()   != null) v.setLngDejada(datos.getLngDejada());
+            // ------------------------------
 
             if (datos.getConductor() != null && datos.getConductor().getId() != 0) {
                 conductorRepo.findByIdAndAdminId(datos.getConductor().getId(), adminId)
